@@ -91,7 +91,7 @@ const GetAllUsers = async (req, res) => {
 };
 
 const GetUserById = async (req, res) => {
-  const userId = req.body.userId;
+  const userId = req.params.userId;
   try {
     const result = await sequelize.query(
       `SELECT UserId, Username, Password, FirstName, LastName, Email, Address, Phone from user where UserId = ${userId}`,

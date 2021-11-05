@@ -57,31 +57,8 @@ async function actionValidator(req, res, next) {
   }
 }
 
-// async function userIdValidator(req, res, next) {
-//   const loggedUserId = req.params.userId;
-//   try {
-//     const result = await sequelize.query(
-//       `select UserId, Description from user where UserId = ${userId}`,
-//       {
-//         type: sequelize.QueryTypes.SELECT,
-//       }
-//     );
-//     if (result[0].Description === loggedUserId) {
-//       next();
-//     } else {
-//       return res
-//         .status(403)
-//         .json({ message: "El usuario no tiene permisos para esta acción." });
-//     }
-//   } catch (error) {
-//     res.status(501).json({ err: "Error en validación." });
-//   }
-// }
-
 module.exports = {
   authenticateToken,
   validateAdmin,
   actionValidator,
-
-  // userIdValidator,
 };
