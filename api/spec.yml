@@ -1,0 +1,747 @@
+openapi: 3.0.1
+info:
+  title: Delilah Resto API
+  description:
+    'API para pedidos de comida deliciosa, Como cliente, podras registrate, ver
+    el listado de nuestros productos y realizar una orden. Los administradores
+    del restaurante tienen la posibilidad de recibir pedido y actualizarlos.'
+  contact:
+    name: Paola Andrea Cadena Joya
+    url: 'https://www.linkedin.com/in/paola-andrea-cadena-joya-62995920b/'
+    email: pcadenajoya@hotmail.com
+  version: v1
+paths:
+  /api/Order/GetAllOrders:
+    get:
+      tags:
+        - Order
+      summary: Obtiene todas las Ordenes
+      operationId: GetAllOrders
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDtoIEnumerableResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Order/GetOrderById:
+    get:
+      tags:
+        - Order
+      summary: Obtiene una Orden por Id de Orden
+      operationId: GetOrderById
+      parameters:
+        - name: OrderId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Order/CreateOrder:
+    post:
+      tags:
+        - Order
+      summary: Crea una orden con la informacion enviada
+      operationId: CreateOrder
+      requestBody:
+        description: json con la informacion de la orden que se va a crear
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderPayload'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/OrderPayload'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/OrderPayload'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Order/UpdateOrder:
+    put:
+      tags:
+        - Order
+      summary: Actualiza una Orden con el Id de la orden enviada
+      operationId: UpdateOrder
+      parameters:
+        - name: OrderId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Order/DeleteOrder:
+    delete:
+      tags:
+        - Order
+      summary: Elimina una Orden con el Id de la orden enviada
+      operationId: DeleteOrder
+      parameters:
+        - name: OrderId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/OrderDetail/GetOrderDetailById:
+    get:
+      tags:
+        - OrderDetail
+      summary: Obtiene un detalle de orden por Id de Orden
+      operationId: GetOrderDetailById
+      parameters:
+        - name: OrderId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetailDtoIEnumerableResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/OrderDetail/CreateOrderDetail:
+    post:
+      tags:
+        - OrderDetail
+      summary: Crea un detalle de orden con la informacion enviada
+      operationId: CreateOrderDetail
+      requestBody:
+        description: json con la informacion del detalle de la orden que se va a crear
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderDetailPayload'
+          text/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderDetailPayload'
+          application/*+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderDetailPayload'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDetailDtoIEnumerableResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/OrderDetail/DeleteOrderDetail:
+    delete:
+      tags:
+        - OrderDetail
+      summary: Elimina el detalle de la orden con el Id de la orden enviada
+      operationId: DeleteOrderDetail
+      parameters:
+        - name: OrderId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Product/GetAllProducts:
+    get:
+      tags:
+        - Product
+      summary: Obtiene todos los productos
+      operationId: GetAllProducts
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDtoIEnumerableResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Product/GetProductById:
+    get:
+      tags:
+        - Product
+      summary: Obtiene un producto por Id de producto
+      operationId: GetProductById
+      parameters:
+        - name: ProductId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Product/CreateProduct:
+    post:
+      tags:
+        - Product
+      summary: Crea un producto con la informacion enviada
+      operationId: CreateProduct
+      requestBody:
+        description: json con la informacion del producto que se va a crear
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPayload'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ProductPayload'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ProductPayload'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Product/UpdateProduct:
+    put:
+      tags:
+        - Product
+      summary: Actualiza un producto con el Id del producto enviado
+      operationId: UpdateProduct
+      parameters:
+        - name: ProductId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/Product/DeleteProduct:
+    delete:
+      tags:
+        - Product
+      summary: Elimina un producto con el Id del producto enviado
+      operationId: DeleteProduct
+      parameters:
+        - name: ProductId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/User/GetAllUsers:
+    get:
+      tags:
+        - User
+      summary: Obtiene todos los usuarios
+      operationId: GetAllUsers
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDtoIEnumerableResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/User/GetUserById:
+    get:
+      tags:
+        - User
+      summary: Obtiene un usuario por Id de Usuario
+      operationId: GetUserById
+      parameters:
+        - name: UserId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/User/CreateUser:
+    post:
+      tags:
+        - User
+      summary: Crea un usuario con la informacion enviada
+      operationId: CreateUser
+      requestBody:
+        description: json con la informacion del usuario que se va a crear
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPayload'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserPayload'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserPayload'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/User/UpdateUser:
+    put:
+      tags:
+        - User
+      summary: Actualiza un usuario con el Id del usuario enviado
+      operationId: UpdateUser
+      parameters:
+        - name: UserId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /api/User/DeleteUser:
+    delete:
+      tags:
+        - User
+      summary: Elimina un usuario con el Id del usuario enviado
+      operationId: DeleteUser
+      parameters:
+        - name: UserId
+          in: query
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDtoResponsePackage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+components:
+  schemas:
+    OrderDetailDto:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int32
+        productId:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+      additionalProperties: false
+    OrderDetailDtoIEnumerableResponsePackage:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDetailDto'
+          nullable: true
+        errors:
+          nullable: true
+      additionalProperties: false
+    OrderDetailPayload:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int32
+        productId:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+      additionalProperties: false
+    OrderDto:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int32
+        userId:
+          type: integer
+          format: int32
+        paymentTypeId:
+          type: integer
+          format: int32
+        orderStatusId:
+          type: integer
+          format: int32
+        description:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+        createdOn:
+          type: string
+          format: date-time
+      additionalProperties: false
+    OrderDtoIEnumerableResponsePackage:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDto'
+          nullable: true
+        errors:
+          nullable: true
+      additionalProperties: false
+    OrderDtoResponsePackage:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        result:
+          $ref: '#/components/schemas/OrderDto'
+        errors:
+          nullable: true
+      additionalProperties: false
+    OrderPayload:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int32
+        paymentTypeId:
+          type: integer
+          format: int32
+        orderStatusId:
+          type: integer
+          format: int32
+        description:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+        createdOn:
+          type: string
+          format: date-time
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties: {}
+    ProductDto:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int32
+        name:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        cost:
+          type: integer
+          format: int32
+      additionalProperties: false
+    ProductDtoIEnumerableResponsePackage:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDto'
+          nullable: true
+        errors:
+          nullable: true
+      additionalProperties: false
+    ProductDtoResponsePackage:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        result:
+          $ref: '#/components/schemas/ProductDto'
+        errors:
+          nullable: true
+      additionalProperties: false
+    ProductPayload:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        cost:
+          type: integer
+          format: int32
+      additionalProperties: false
+    UserDto:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int32
+        roleId:
+          type: integer
+          format: int32
+        username:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserDtoIEnumerableResponsePackage:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDto'
+          nullable: true
+        errors:
+          nullable: true
+      additionalProperties: false
+    UserDtoResponsePackage:
+      type: object
+      properties:
+        message:
+          type: string
+          nullable: true
+        result:
+          $ref: '#/components/schemas/UserDto'
+        errors:
+          nullable: true
+      additionalProperties: false
+    UserPayload:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int32
+        password:
+          type: string
+          nullable: true
+        roleId:
+          type: integer
+          format: int32
+        username:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+      additionalProperties: false
