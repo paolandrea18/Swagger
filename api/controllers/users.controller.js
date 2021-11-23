@@ -56,7 +56,7 @@ const Login = async (req, res) => {
         .status(400)
         .json({ message: "Usuario o contraseña inválidos" });
     }
-    console.log(result);
+
     if (await bcrypt.compare(req.body.password, result[0].Password)) {
       var payload = { username, password };
       const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
@@ -71,7 +71,6 @@ const Login = async (req, res) => {
         .json({ message: "Usuario o contraseña no encontrados." });
     }
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: `Error en login del usuario.` });
   }
 };
@@ -117,6 +116,7 @@ const UpdateUser = async (req, res) => {
     address,
     phone,
   } = req.body;
+
   try {
     await sequelize.query(
       `UPDATE user 
@@ -126,8 +126,8 @@ const UpdateUser = async (req, res) => {
        lastName = '${lastName}', 
        email = '${email}', 
        address = '${address}', 
-       phone = '${phone}
-       WHERE userId = '${userId}'`,
+       phone = '${phone}'
+       WHERE userId = ${userId}`,
       {
         type: sequelize.QueryTypes.UPDATE,
       }
@@ -142,7 +142,9 @@ const DeleteUser = async (req, res) => {
   const userId = req.params.userId;
   try {
     await sequelize.query(
-      `UPDATE user set Enable = 0 where UserId = ${userId}`,
+      `UPDATE user 
+        set Enable = 0 
+       WHERE UserId = ${userId}`,
       {
         type: sequelize.QueryTypes.UPDATE,
       }

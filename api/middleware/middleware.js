@@ -72,7 +72,7 @@ async function userValidatorParam(req, res, next) {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    console.log(result);
+
     if (result[0].Description === adminRol || userLoggedId === userId) {
       next();
     } else {
@@ -81,7 +81,6 @@ async function userValidatorParam(req, res, next) {
         .json({ message: "El usuario no tiene permisos para esta acción." });
     }
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: "Error en validación." });
   }
 }
@@ -101,7 +100,6 @@ async function userValidatorBody(req, res, next) {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    console.log(result);
     if (result[0].Description === adminRol || userLoggedId === userId) {
       next();
     } else {
@@ -110,7 +108,6 @@ async function userValidatorBody(req, res, next) {
         .json({ message: "El usuario no tiene permisos para esta acción." });
     }
   } catch (error) {
-    console.log(error);
     res.status(501).json({ error: "Error en validación." });
   }
 }

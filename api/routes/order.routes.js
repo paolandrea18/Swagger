@@ -16,8 +16,8 @@ router.get(
 );
 
 router.get(
-  "/:userId",
-  middleware.authenticateToken,
+  "/:userLoggedId/:userId",
+  [middleware.authenticateToken, middleware.userValidatorParam],
   orderController.GetOrdersByUserId
 );
 

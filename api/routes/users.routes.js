@@ -11,20 +11,20 @@ router.get(
   userController.GetAllUsers
 );
 router.get(
-  "/:roleId/:userId",
-  [middleware.authenticateToken, middleware.actionValidator],
+  "/:userLoggedId/:userId",
+  [middleware.authenticateToken, middleware.userValidatorParam],
   userController.GetUserById
 );
 
 router.put(
-  "/",
+  "/update",
   [middleware.authenticateToken, middleware.userValidatorBody],
   userController.UpdateUser
 );
 
 router.delete(
-  "/:userId",
-  middleware.authenticateToken,
+  "/delete/:userLoggedId/:userId",
+  [middleware.authenticateToken, middleware.userValidatorParam],
   userController.DeleteUser
 );
 
