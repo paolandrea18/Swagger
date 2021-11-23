@@ -8,14 +8,14 @@ const GetAllOrders = async (req, res) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    res.status(201).json({ data: result });
+    res.status(200).json({ data: result });
   } catch (error) {
     res.status(501).json({ error: "No se puede obtener la información." });
   }
 };
 
 const GetOrdersByUserId = async (req, res) => {
-  const userId = req.body.userId;
+  const userId = req.params.userId;
   try {
     const result = await sequelize.query(
       `select os.Description Status, 
@@ -38,9 +38,9 @@ const GetOrdersByUserId = async (req, res) => {
     );
 
     if (result.length > 0) {
-      res.status(201).json({ data: result });
+      res.status(200).json({ data: result });
     } else {
-      res.status(501).json({ msg: "El usuario no posee órdenes." });
+      res.status(204).json({ message: "El usuario no posee órdenes." });
     }
   } catch (error) {
     res.status(501).json({ error: "No se puede obtener la información" });
@@ -72,7 +72,7 @@ const CreateOrder = async (req, res) => {
         }
       );
     });
-    res.status(200).json({ msg: "Orden creada con éxito." });
+    res.status(201).json({ message: "Orden creada con éxito." });
   } catch (error) {
     res.status(501).json({ error: "No se pudo crear la orden." });
   }
@@ -88,7 +88,9 @@ const UpdateOrderStatus = async (req, res) => {
         type: sequelize.QueryTypes.UPDATE,
       }
     );
-    res.status(201).json({ msg: "El estado de la orden ha sido actualizado." });
+    res
+      .status(201)
+      .json({ message: "El estado de la orden ha sido actualizado." });
   } catch (error) {
     res
       .status(501)

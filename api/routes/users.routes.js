@@ -12,10 +12,20 @@ router.get(
 );
 router.get(
   "/:roleId/:userId",
-  middleware.authenticateToken,
-  middleware.actionValidator,
+  [middleware.authenticateToken, middleware.actionValidator],
   userController.GetUserById
 );
-router.delete("/", middleware.authenticateToken, userController.DeleteUser);
+
+router.put(
+  "/",
+  [middleware.authenticateToken, middleware.userValidatorBody],
+  userController.UpdateUser
+);
+
+router.delete(
+  "/:userId",
+  middleware.authenticateToken,
+  userController.DeleteUser
+);
 
 module.exports = router;

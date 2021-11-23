@@ -3,9 +3,9 @@ const router = express.Router();
 const productController = require("../controllers/products.controller");
 const middleware = require("../middleware/middleware");
 
-router.get("/getById", productController.GetProductById);
+router.get("/getById/:productId", productController.GetProductById);
 
-router.get("/products", productController.GetAll);
+router.get("/", productController.GetAll);
 
 router.post(
   "/",
@@ -20,8 +20,8 @@ router.put(
 );
 
 router.delete(
-  "/",
-  [middleware.authenticateToken, middleware.validateAdmin],
+  "/:roleId/:productId",
+  [middleware.authenticateToken, middleware.actionValidator],
   productController.DeleteProduct
 );
 

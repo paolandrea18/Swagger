@@ -8,14 +8,15 @@ router.post(
   middleware.authenticateToken,
   orderController.CreateOrder
 );
+
 router.get(
-  "/getAllOrders",
+  "/getAllOrders/:roleId",
   [middleware.authenticateToken, middleware.actionValidator],
   orderController.GetAllOrders
 );
 
 router.get(
-  "/",
+  "/:userId",
   middleware.authenticateToken,
   orderController.GetOrdersByUserId
 );

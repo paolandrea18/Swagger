@@ -54,23 +54,24 @@ const Login = async (req, res) => {
     if (result == null) {
       return res
         .status(400)
-        .json({ message: "Ingrese un usuario y contraseña válida." });
+        .json({ message: "Usuario o contraseña inválidos" });
     }
-
+    console.log(result);
     if (await bcrypt.compare(req.body.password, result[0].Password)) {
       var payload = { username, password };
       const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
 
-      res.status(201).json({
+      res.status(200).json({
         message: "Usuario logeado con éxito.",
         data: { accessToken: accessToken },
       });
     } else {
       return res
         .status(404)
-        .json({ message: "Usuario o contraseña inválida." });
+        .json({ message: "Usuario o contraseña no encontrados." });
     }
   } catch (error) {
+    console.log(error);
     res.status(501).json({ error: `Error en login del usuario.` });
   }
 };
@@ -84,9 +85,9 @@ const GetAllUsers = async (req, res) => {
       }
     );
 
-    res.status(201).json({ data: result });
+    res.status(200).json({ data: result });
   } catch (error) {
-    res.status(501).json({ error: "No se pudo obtener los usuarios." });
+    res.status(501).json({ error: "No se pudo obtener la información." });
   }
 };
 
@@ -97,16 +98,48 @@ const GetUserById = async (req, res) => {
       `SELECT UserId, Username, Password, FirstName, LastName, Email, Address, Phone from user where UserId = ${userId}`,
       { type: sequelize.QueryTypes.SELECT }
     );
-    res.status(201).json({ data: result });
+    res.status(200).json({ data: result });
   } catch (error) {
     res
       .status(501)
-      .json({ msg: "La información del usuario no puede ser consultada." });
+      .json({ error: "La información del usuario no pudo ser consultada." });
+  }
+};
+
+const UpdateUser = async (req, res) => {
+  const {
+    userId,
+    username,
+    password,
+    firstName,
+    lastName,
+    email,
+    address,
+    phone,
+  } = req.body;
+  try {
+    await sequelize.query(
+      `UPDATE user 
+       set username = '${username}', 
+       password = '${password}', 
+       firstName = '${firstName}', 
+       lastName = '${lastName}', 
+       email = '${email}', 
+       address = '${address}', 
+       phone = '${phone}
+       WHERE userId = '${userId}'`,
+      {
+        type: sequelize.QueryTypes.UPDATE,
+      }
+    );
+    res.status(201).json({ message: "Usuario actualizado con éxito" });
+  } catch (error) {
+    res.status(501).json({ error: "El usuario no pudo ser actualizado." });
   }
 };
 
 const DeleteUser = async (req, res) => {
-  const userId = req.body.userId;
+  const userId = req.params.userId;
   try {
     await sequelize.query(
       `UPDATE user set Enable = 0 where UserId = ${userId}`,
@@ -114,9 +147,9 @@ const DeleteUser = async (req, res) => {
         type: sequelize.QueryTypes.UPDATE,
       }
     );
-    res.status(201).json({ msg: "Usuario eliminado con éxito." });
+    res.status(201).json({ message: "Usuario eliminado con éxito." });
   } catch (error) {
-    res.status(501).json({ msg: "El usuario no pudo ser eliminado." });
+    res.status(501).json({ error: "El usuario no pudo ser eliminado." });
   }
 };
 
@@ -125,5 +158,6 @@ module.exports = {
   Login,
   GetAllUsers,
   GetUserById,
+  UpdateUser,
   DeleteUser,
 };

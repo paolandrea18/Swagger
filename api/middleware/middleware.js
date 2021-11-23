@@ -27,12 +27,12 @@ async function validateAdmin(req, res, next) {
     if (result[0].Description === adminRol) {
       next();
     } else {
-      return res
-        .status(403)
-        .json({ message: "El usuario no tiene permisos para esta acción." });
+      return res.status(403).json({
+        message: "El usuario no tiene permisos para esta acción.",
+      });
     }
   } catch (error) {
-    res.status(501).json({ err: "Error en validación." });
+    res.status(501).json({ error: "Error en validación." });
   }
 }
 
@@ -53,7 +53,65 @@ async function actionValidator(req, res, next) {
         .json({ message: "El usuario no tiene permisos para esta acción." });
     }
   } catch (error) {
-    res.status(501).json({ err: "Error en validación." });
+    res.status(501).json({ error: "Error en validación." });
+  }
+}
+
+async function userValidatorParam(req, res, next) {
+  const { userLoggedId, userId } = req.params;
+  try {
+    const result = await sequelize.query(
+      `select 
+       u.UserId,
+       r.Description 
+       from user u
+       inner join role r
+       on r.roleId = u.roleId  
+       where u.UserId = ${userLoggedId}`,
+      {
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+    console.log(result);
+    if (result[0].Description === adminRol || userLoggedId === userId) {
+      next();
+    } else {
+      return res
+        .status(403)
+        .json({ message: "El usuario no tiene permisos para esta acción." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(501).json({ error: "Error en validación." });
+  }
+}
+
+async function userValidatorBody(req, res, next) {
+  const { userLoggedId, userId } = req.body;
+  try {
+    const result = await sequelize.query(
+      `select 
+       u.UserId,
+       r.Description 
+       from user u
+       inner join role r
+       on r.roleId = u.roleId  
+       where u.UserId = ${userLoggedId}`,
+      {
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+    console.log(result);
+    if (result[0].Description === adminRol || userLoggedId === userId) {
+      next();
+    } else {
+      return res
+        .status(403)
+        .json({ message: "El usuario no tiene permisos para esta acción." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(501).json({ error: "Error en validación." });
   }
 }
 
@@ -61,4 +119,6 @@ module.exports = {
   authenticateToken,
   validateAdmin,
   actionValidator,
+  userValidatorParam,
+  userValidatorBody,
 };
